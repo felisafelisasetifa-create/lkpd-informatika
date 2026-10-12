@@ -319,14 +319,14 @@
                     </div>
                 </div>
 
-                <!-- Questions Form -->
+                <!-- Questions Form (Removed native required to prevent silent blocking) -->
                 <form id="form-lkpd" onsubmit="saveLKPD(event)" class="p-6 md:p-8 space-y-6">
                     <!-- Question 1 -->
                     <div class="space-y-2">
                         <label class="block font-semibold text-slate-800 text-sm">
                             1. Apa hasil akhir nilai terbesar yang diperoleh dari kedua algoritma? <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="lkpd-q1" required placeholder="Tuliskan nilai terbesar yang dihasilkan kedua algoritma..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                        <input type="text" id="lkpd-q1" placeholder="Tuliskan nilai terbesar yang dihasilkan kedua algoritma..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
                     </div>
 
                     <!-- Question 2 -->
@@ -337,11 +337,11 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <span class="text-xs font-semibold text-slate-600 block mb-1">Cara A (Pencarian Langsung):</span>
-                                <input type="number" id="lkpd-q2a" required placeholder="Jumlah perbandingan..." class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm">
+                                <input type="number" id="lkpd-q2a" placeholder="Jumlah perbandingan..." class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm">
                             </div>
                             <div>
                                 <span class="text-xs font-semibold text-slate-600 block mb-1">Cara B (Bubble Sort standar):</span>
-                                <input type="number" id="lkpd-q2b" required placeholder="Jumlah perbandingan..." class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm">
+                                <input type="number" id="lkpd-q2b" placeholder="Jumlah perbandingan..." class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm">
                             </div>
                         </div>
                     </div>
@@ -351,7 +351,7 @@
                         <label class="block font-semibold text-slate-800 text-sm">
                             3. Algoritma mana yang lebih efisien untuk kasus di atas? Berikan alasannya berdasarkan jumlah langkah! <span class="text-red-500">*</span>
                         </label>
-                        <textarea id="lkpd-q3" rows="3" required placeholder="Jelaskan algoritma mana yang lebih efisien dan alasan logisnya..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
+                        <textarea id="lkpd-q3" rows="3" placeholder="Jelaskan algoritma mana yang lebih efisien dan alasan logisnya..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
                     </div>
 
                     <!-- Question 4 -->
@@ -359,7 +359,7 @@
                         <label class="block font-semibold text-slate-800 text-sm">
                             4. Apakah pilihan algoritma akan berubah jika semua angka tersebut harus diurutkan? Mengapa? <span class="text-red-500">*</span>
                         </label>
-                        <textarea id="lkpd-q4" rows="3" required placeholder="Tuliskan pendapat dan kesimpulan kelompok..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
+                        <textarea id="lkpd-q4" rows="3" placeholder="Tuliskan pendapat dan kesimpulan kelompok..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
                     </div>
 
                     <!-- Question Refleksi -->
@@ -406,7 +406,7 @@
                         </p>
                         <div class="space-y-2 text-sm text-slate-700">
                             <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
-                                <input type="radio" name="q1" value="A" required class="text-blue-600">
+                                <input type="radio" name="q1" value="A" class="text-blue-600">
                                 <span>A. Warna tampilan program</span>
                             </label>
                             <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
@@ -431,7 +431,7 @@
                         </p>
                         <div class="space-y-2 text-sm text-slate-700">
                             <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
-                                <input type="radio" name="q2" value="A" required class="text-blue-600">
+                                <input type="radio" name="q2" value="A" class="text-blue-600">
                                 <span>A. 10 perbandingan</span>
                             </label>
                             <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
@@ -456,7 +456,7 @@
                         </p>
                         <div class="space-y-2 text-sm text-slate-700">
                             <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
-                                <input type="radio" name="q3" value="A" required class="text-blue-600">
+                                <input type="radio" name="q3" value="A" class="text-blue-600">
                                 <span>A. Agar program selalu memiliki baris kode lebih banyak</span>
                             </label>
                             <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
@@ -537,18 +537,14 @@
                             <span id="gsheets-status-badge" class="text-[11px] bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded font-bold">Belum Terhubung ke Google Sheet</span>
                         </div>
                         <p class="text-xs text-slate-600 leading-relaxed">
-                            Tempel URL Web App Google Apps Script Anda di bawah ini agar data dari HP siswa otomatis tersimpan di Google Sheets Anda:
+                            https://script.google.com/macros/s/AKfycbw0Gdgfy9YGXCtCMU96XAzRaYTTuL7_jvIIWvU59n0iItsgqpyITW9iHlV3b9x0u4hXHQ/exec
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-2">
                             <input type="url" id="input-gsheets-url" placeholder="https://script.google.com/macros/s/.../exec" class="flex-grow px-3 py-2 rounded-lg border border-blue-300 text-xs bg-white outline-none focus:ring-2 focus:ring-blue-500">
-                            <button onclick="saveGoogleSheetConfig()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1 flex-shrink-0">
+                            <button onclick="saveGoogleSheetConfig()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1">
                                 <i data-lucide="save" class="w-4 h-4"></i>
-                                <span>Simpan URL</span>
-                            </button>
-                            <button onclick="testGoogleSheetConnection()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1 flex-shrink-0">
-                                <i data-lucide="zap" class="w-4 h-4"></i>
-                                <span>Test Koneksi</span>
+                                <span>Simpan URL Google Sheet</span>
                             </button>
                         </div>
 
@@ -559,13 +555,9 @@
                                 <ol class="list-decimal pl-4 space-y-1 mt-2 text-slate-700">
                                     <li>Buat file baru di <a href="https://sheets.new" target="_blank" class="text-blue-600 underline font-semibold">Google Sheets</a>.</li>
                                     <li>Buka menu <strong>Extensions (Ekstensi)</strong> > <strong>Apps Script</strong>.</li>
-                                    <li>Hapus semua kode di sana, lalu salin dan tempel kode lengkap di bawah ini:</li>
+                                    <li>Hapus semua kode di sana, lalu salin dan tempel kode otomatis di bawah ini:</li>
                                 </ol>
                                 <div class="bg-slate-900 text-emerald-400 p-3 rounded-lg font-mono text-[10px] mt-2 overflow-x-auto select-all">
-function doGet(e) {
-  return ContentService.createTextOutput("Google Sheet Webhook Aktif!").setMimeType(ContentService.MimeType.TEXT);
-}
-
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -581,8 +573,8 @@ function doPost(e) {
 }
                                 </div>
                                 <p class="mt-2 text-slate-700">4. Klik tombol <strong>Deploy</strong> (Terapkan) > <strong>New deployment (Deployment baru)</strong> > Pilih tipe <strong>Web app</strong>.</p>
-                                <p class="text-slate-700">5. Atur <em>Execute as: Me (Saya)</em> dan <em>Who has access: Anyone (Siapa saja)</em>. <strong>Penting:</strong> Jika Anda memperbarui kode, pastikan memilih versi baru (New version) saat deploy.</p>
-                                <p class="text-slate-700 font-semibold mt-1">6. Salin URL Web App berakhiran <code>/exec</code>, tempel di kotak di atas, lalu klik tombol <strong>Test Koneksi</strong>!</p>
+                                <p class="text-slate-700">5. Atur <em>Execute as: Me</em> dan <em>Who has access: Anyone (Siapa saja)</em>. Klik Deploy dan berikan izin.</p>
+                                <p class="text-slate-700 font-semibold mt-1">6. Salin URL Web App yang dihasilkan, lalu tempel di kotak di atas!</p>
                             </details>
                         </div>
                     </div>
@@ -767,49 +759,13 @@ function doPost(e) {
         window.saveGoogleSheetConfig = function() {
             const url = document.getElementById('input-gsheets-url').value.trim();
             if (!url.startsWith('https://script.google.com')) {
-                showModal('Format URL Salah', 'Pastikan Anda memasukkan URL Web App Google Apps Script yang sah (diawali https://script.google.com dan berakhiran /exec).');
+                showModal('Format URL Salah', 'Pastikan Anda memasukkan URL Web App Google Apps Script yang sah (diawali https://script.google.com).');
                 return;
             }
             window.googleSheetWebhookUrl = url;
             localStorage.setItem('tp7_gsheets_webhook', url);
             setGoogleSheetStatus("Google Sheet Terhubung", "bg-emerald-100 text-emerald-800");
-            showModal('Berhasil!', 'Koneksi ke Google Sheets guru berhasil disimpan. Silakan klik tombol "Test Koneksi" untuk memastikan data masuk.');
-        }
-
-        window.testGoogleSheetConnection = async function() {
-            const url = document.getElementById('input-gsheets-url').value.trim() || window.googleSheetWebhookUrl;
-            if (!url.startsWith('https://script.google.com')) {
-                showModal('Belum Ada URL', 'Silakan masukkan dan simpan URL Web App Google Sheets Anda terlebih dahulu.');
-                return;
-            }
-            showModal('Menguji Koneksi...', 'Mengirim data uji coba (Test Siswa) ke Google Sheet Anda...');
-            try {
-                const testEntry = {
-                    timestamp: new Date().toLocaleString('id-ID'),
-                    nama: "TEST KONEKSI GURU",
-                    kelas: "Admin-X",
-                    kelompok: "Kelompok Uji",
-                    anggota: "Guru Informatika",
-                    lkpdQ1: "Berhasil Terhubung",
-                    lkpdQ2a: "4",
-                    lkpdQ2b: "10",
-                    lkpdQ3: "Uji coba webhook sukses",
-                    lkpdQ4: "Uji coba sukses",
-                    lkpdQ5: "Sistem siap digunakan siswa",
-                    quizScore: 100
-                };
-
-                await fetch(url, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(testEntry)
-                });
-
-                showModal('Uji Kirim Berhasil!', 'Data tes telah dikirim ke Google Sheet Anda. Silakan cek file Google Sheets Anda apakah baris baru bertuliskan "TEST KONEKSI GURU" sudah muncul.');
-            } catch(err) {
-                showModal('Gagal Mengirim', 'Terjadi kesalahan jaringan: ' + err.message);
-            }
+            showModal('Berhasil!', 'Koneksi ke Google Sheets guru berhasil disimpan. Setiap siswa yang mengerjakan di HP akan otomatis masuk ke Google Sheet Anda.');
         }
 
         // Navigation Controller
@@ -845,8 +801,16 @@ function doPost(e) {
 
         window.saveIdentity = function(e) {
             e.preventDefault();
-            window.studentData.nama = document.getElementById('input-nama').value.trim();
-            window.studentData.kelas = document.getElementById('input-kelas').value.trim();
+            const nama = document.getElementById('input-nama').value.trim();
+            const kelas = document.getElementById('input-kelas').value.trim();
+            
+            if (!nama || !kelas) {
+                showModal('Data Belum Lengkap', 'Mohon isi Nama Lengkap dan Kelas Anda terlebih dahulu.');
+                return;
+            }
+
+            window.studentData.nama = nama;
+            window.studentData.kelas = kelas;
             window.studentData.kelompok = document.getElementById('input-kelompok').value.trim() || '-';
             window.studentData.anggota = document.getElementById('input-anggota').value.trim() || '-';
 
@@ -856,11 +820,22 @@ function doPost(e) {
 
         window.saveLKPD = function(e) {
             e.preventDefault();
-            window.lkpdAnswers.q1 = document.getElementById('lkpd-q1').value.trim();
-            window.lkpdAnswers.q2a = document.getElementById('lkpd-q2a').value;
-            window.lkpdAnswers.q2b = document.getElementById('lkpd-q2b').value;
-            window.lkpdAnswers.q3 = document.getElementById('lkpd-q3').value.trim();
-            window.lkpdAnswers.q4 = document.getElementById('lkpd-q4').value.trim();
+            const q1 = document.getElementById('lkpd-q1').value.trim();
+            const q2a = document.getElementById('lkpd-q2a').value.trim();
+            const q2b = document.getElementById('lkpd-q2b').value.trim();
+            const q3 = document.getElementById('lkpd-q3').value.trim();
+            const q4 = document.getElementById('lkpd-q4').value.trim();
+
+            if (!q1 || !q2a || !q2b || !q3 || !q4) {
+                showModal('LKPD Belum Lengkap', 'Mohon lengkapi semua pertanyaan wajib pada LKPD-2 (Nomor 1 sampai 4) sebelum melanjutkan.');
+                return;
+            }
+
+            window.lkpdAnswers.q1 = q1;
+            window.lkpdAnswers.q2a = q2a;
+            window.lkpdAnswers.q2b = q2b;
+            window.lkpdAnswers.q3 = q3;
+            window.lkpdAnswers.q4 = q4;
             window.lkpdAnswers.q5 = document.getElementById('lkpd-q5').value.trim() || '-';
 
             window.goToStep(4);
@@ -869,9 +844,14 @@ function doPost(e) {
         window.submitQuiz = async function(e) {
             e.preventDefault();
             const form = document.getElementById('form-quiz');
-            const q1Val = form.q1.value;
-            const q2Val = form.q2.value;
-            const q3Val = form.q3.value;
+            const q1Val = form.q1 ? form.q1.value : '';
+            const q2Val = form.q2 ? form.q2.value : '';
+            const q3Val = form.q3 ? form.q3.value : '';
+
+            if (!q1Val || !q2Val || !q3Val) {
+                showModal('Kuis Belum Lengkap', 'Silakan pilih jawaban untuk Soal 1, 2, dan 3 terlebih dahulu sebelum menyelesaikan kuis.');
+                return;
+            }
 
             window.quizResults = { q1: q1Val, q2: q2Val, q3: q3Val };
 
