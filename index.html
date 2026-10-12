@@ -683,6 +683,7 @@ function doPost(e) {
 
         // Cloud Firestore Real-time Sync (Rule 1, Rule 2, Rule 3 followed)
         async function initCloudSync() {
+            return;
             if (!auth || !db) {
                 setCloudStatus("Mode Lokal (Cloud Nonaktif)", "bg-amber-100 text-amber-800");
                 loadFromLocalStorage();
