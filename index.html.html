@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Informatika - Membandingkan Algoritma (Excel & Cloud Auto-Sync)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for performance visual comparison -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SheetJS (XLSX) CDN for export to Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-500 p-2 rounded-lg text-white">
+                    <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Informatika - TP-7 <span class="text-xs bg-emerald-500 text-slate-900 px-1.5 py-0.5 rounded font-bold ml-1">Excel & Cloud Sync</span></h1>
+                    <p class="text-xs text-blue-200">Membandingkan Algoritma Dasar Pemrograman</p>
+                </div>
+            </div>
+            <!-- Progress Steps Indicator -->
+            <nav id="nav-steps" class="hidden md:flex space-x-2 text-xs font-medium">
+                <button onclick="goToStep(1)" id="step-btn-1" class="px-3 py-1.5 rounded-full bg-blue-600 text-white flex items-center space-x-1 transition">
+                    <span class="w-5 h-5 rounded-full bg-white text-blue-900 font-bold flex items-center justify-center text-[10px]">1</span>
+                    <span>Identitas</span>
+                </button>
+                <button onclick="goToStep(2)" id="step-btn-2" class="px-3 py-1.5 rounded-full bg-indigo-800 text-indigo-300 flex items-center space-x-1 hover:bg-indigo-700 transition">
+                    <span class="w-5 h-5 rounded-full bg-indigo-900 text-indigo-300 font-bold flex items-center justify-center text-[10px]">2</span>
+                    <span>Materi Ajar</span>
+                </button>
+                <button onclick="goToStep(3)" id="step-btn-3" class="px-3 py-1.5 rounded-full bg-indigo-800 text-indigo-300 flex items-center space-x-1 hover:bg-indigo-700 transition">
+                    <span class="w-5 h-5 rounded-full bg-indigo-900 text-indigo-300 font-bold flex items-center justify-center text-[10px]">3</span>
+                    <span>LKPD-2</span>
+                </button>
+                <button onclick="goToStep(4)" id="step-btn-4" class="px-3 py-1.5 rounded-full bg-indigo-800 text-indigo-300 flex items-center space-x-1 hover:bg-indigo-700 transition">
+                    <span class="w-5 h-5 rounded-full bg-indigo-900 text-indigo-300 font-bold flex items-center justify-center text-[10px]">4</span>
+                    <span>Kuis Evaluasi</span>
+                </button>
+                <button onclick="goToStep(5)" id="step-btn-5" class="px-3 py-1.5 rounded-full bg-indigo-800 text-indigo-300 flex items-center space-x-1 hover:bg-indigo-700 transition">
+                    <span class="w-5 h-5 rounded-full bg-indigo-900 text-indigo-300 font-bold flex items-center justify-center text-[10px]">5</span>
+                    <span>Laporan & Excel</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Custom Notification Modal (No alert()) -->
+    <div id="modal-notification" class="fixed inset-0 bg-black/50 z-[110] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl text-center">
+            <div id="modal-icon-container" class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="info" class="w-6 h-6"></i>
+            </div>
+            <h3 id="modal-title" class="font-bold text-slate-800 text-lg">Informasi</h3>
+            <p id="modal-message" class="text-xs text-slate-600 leading-relaxed"></p>
+            <button onclick="closeNotificationModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-xs transition">Mengerti / Tutup</button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- ======================================================== -->
+        <!-- STEP 1: IDENTITAS SISWA -->
+        <!-- ======================================================== -->
+        <section id="view-step-1" class="block animate-fade-in">
+            <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+                <div class="gradient-bg p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm">
+                        <i data-lucide="user-check" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold">Identitas Peserta Didik</h2>
+                    <p class="text-blue-100 text-sm mt-1">Silakan isi data diri dan kelompok sebelum memulai pembelajaran</p>
+                </div>
+                
+                <form id="form-identity" onsubmit="saveIdentity(event)" class="p-6 md:p-8 space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap Siswa <span class="text-red-500">*</span></label>
+                        <input type="text" id="input-nama" required placeholder="Contoh: Ahmad Rizki" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Kelas <span class="text-red-500">*</span></label>
+                            <input type="text" id="input-kelas" required placeholder="Contoh: X-1" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Kelompok (Opsional)</label>
+                            <input type="text" id="input-kelompok" placeholder="Contoh: Kelompok 3 (Turing)" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Anggota Kelompok Lainnya (Opsional)</label>
+                        <textarea id="input-anggota" rows="2" placeholder="1. Budi, 2. Siti, 3. Dewi..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"></textarea>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2">
+                            <span>Mulai Pelajari Materi</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- STEP 2: MATERI AJAR -->
+        <!-- ======================================================== -->
+        <section id="view-step-2" class="hidden">
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden mb-6">
+                <div class="border-b border-slate-200 bg-slate-50 px-6 py-4 flex flex-wrap justify-between items-center gap-2">
+                    <div>
+                        <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2.5 py-1 rounded-full uppercase tracking-wider">Pertemuan Ke-2</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">Membandingkan Beberapa Algoritma Dasar Pemrograman</h2>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-2 text-xs text-amber-800 flex items-center space-x-2">
+                        <i data-lucide="help-circle" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+                        <span><strong>Pertanyaan Pemantik:</strong> "Jika ada dua cara menyelesaikan masalah yang sama, bagaimana kita menentukan cara yang lebih baik?"</span>
+                    </div>
+                </div>
+
+                <div class="p-6 md:p-8 space-y-8">
+                    <!-- Subsection A: Pengertian & Kriteria -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2 space-y-4">
+                            <h3 class="text-lg font-bold text-indigo-900 flex items-center space-x-2">
+                                <i data-lucide="book-open" class="w-5 h-5 text-blue-600"></i>
+                                <span>1. Pengertian & Alasan Membandingkan Algoritma</span>
+                            </h3>
+                            <p class="text-slate-600 leading-relaxed text-sm">
+                                <strong>Algoritma</strong> adalah urutan langkah-langkah yang logis, terstruktur, dan sistematis untuk menyelesaikan masalah. Suatu masalah sering kali memiliki lebih dari satu algoritma untuk menyelesaikannya.
+                            </p>
+                            <p class="text-slate-600 leading-relaxed text-sm">
+                                Kita perlu membandingkan algoritma untuk memastikan solusi yang dipilih tidak hanya **benar**, tetapi juga **efisien**, **mudah dipahami**, serta **hemat langkah dan memori**.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                            <h4 class="font-bold text-slate-800 text-sm flex items-center space-x-1.5">
+                                <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
+                                <span>3 Kriteria Utama Perbandingan</span>
+                            </h4>
+                            <ul class="space-y-2 text-xs">
+                                <li class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <strong class="text-blue-700 block">a. Kesederhanaan</strong>
+                                    Seberapa mudah algoritma dipahami, ditulis, dan dibaca.
+                                </li>
+                                <li class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <strong class="text-indigo-700 block">b. Jumlah Langkah</strong>
+                                    Banyaknya operasi/perbandingan yang dilakukan untuk hasil akhir.
+                                </li>
+                                <li class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <strong class="text-emerald-700 block">c. Efisiensi</strong>
+                                    Penghematan waktu proses dan memori komputasi saat data membesar.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-200">
+
+                    <!-- Subsection B: Contoh Penerapan Mencari Nilai Terbesar -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-indigo-900 flex items-center space-x-2">
+                            <i data-lucide="code-2" class="w-5 h-5 text-blue-600"></i>
+                            <span>2. Studi Kasus: Mencari Nilai Terbesar dari [5, 8, 3, 12, 7]</span>
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Algoritma 1 -->
+                            <div class="bg-blue-50/50 border border-blue-200 rounded-xl p-5 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="font-bold text-blue-900">Cara A: Pencarian Langsung</h4>
+                                    <span class="bg-blue-200 text-blue-800 text-xs px-2.5 py-0.5 rounded-full font-semibold">4 Perbandingan</span>
+                                </div>
+                                <p class="text-xs text-slate-600">Memeriksa angka satu per satu dari kiri ke kanan dan memperbarui nilai terbesar sementara.</p>
+                                <div class="bg-slate-900 text-slate-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                                    <p class="text-slate-400">// Pseudocode Pencarian Langsung</p>
+                                    <p>terbesar = angka[0]</p>
+                                    <p>UNTUK setiap nilai dalam angka:</p>
+                                    <p class="pl-4">JIKA nilai > terbesar:</p>
+                                    <p class="pl-8">terbesar = nilai</p>
+                                    <p>TAMPILKAN terbesar</p>
+                                </div>
+                            </div>
+
+                            <!-- Algoritma 2 -->
+                            <div class="bg-purple-50/50 border border-purple-200 rounded-xl p-5 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="font-bold text-purple-900">Cara B: Pengurutan (Bubble Sort)</h4>
+                                    <span class="bg-purple-200 text-purple-800 text-xs px-2.5 py-0.5 rounded-full font-semibold">10 Perbandingan</span>
+                                </div>
+                                <p class="text-xs text-slate-600">Mengurutkan seluruh angka dari terkecil ke terbesar lebih dulu, lalu mengambil angka paling akhir.</p>
+                                <div class="bg-slate-900 text-slate-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                                    <p class="text-slate-400">// Pseudocode Bubble Sort</p>
+                                    <p>UNTUK i dari 0 sampai n-2:</p>
+                                    <p class="pl-4">UNTUK j dari 0 sampai n-i-2:</p>
+                                    <p class="pl-8">JIKA angka[j] > angka[j+1]:</p>
+                                    <p class="pl-12">TUKAR angka[j] dengan angka[j+1]</p>
+                                    <p>TAMPILKAN angka[n-1]</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-200">
+
+                    <!-- Interactive Visual Chart section -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-indigo-900 flex items-center space-x-2">
+                                <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i>
+                                <span>3. Efisiensi Saat Jumlah Data Bertambah</span>
+                            </h3>
+                            <span class="text-xs text-slate-500">Visualisasi Kompleksitas $O(n)$ vs $O(n^2)$</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                            <div class="lg:col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <div class="h-64">
+                                    <canvas id="chartComparison"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3 text-xs">
+                                <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                                    <span class="font-bold text-slate-700">Tabel Jumlah Operasi/Perbandingan:</span>
+                                    <table class="w-full text-left mt-2 border-collapse">
+                                        <thead>
+                                            <tr class="border-b text-slate-500">
+                                                <th class="py-1">Jumlah Data</th>
+                                                <th class="py-1 text-blue-600">Langsung O(n)</th>
+                                                <th class="py-1 text-amber-600">Bubble Sort O(n²)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100 font-medium">
+                                            <tr><td class="py-1">5 angka</td><td class="text-blue-600">4</td><td class="text-amber-600">10</td></tr>
+                                            <tr><td class="py-1">10 angka</td><td class="text-blue-600">9</td><td class="text-amber-600">45</td></tr>
+                                            <tr><td class="py-1">20 angka</td><td class="text-blue-600">19</td><td class="text-amber-600">190</td></tr>
+                                            <tr><td class="py-1">100 angka</td><td class="text-blue-600">99</td><td class="text-amber-600">4.950</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-900">
+                                    <strong>Kesimpulan Materi:</strong> Jika hanya butuh mencari nilai terbesar, Pencarian Langsung jauh lebih efisien karena tidak melakukan pekerjaan tambahan seperti mengurutkan data.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation Buttons -->
+                <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex justify-between">
+                    <button onclick="goToStep(1)" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 font-medium text-sm flex items-center space-x-1">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        <span>Kembali ke Identitas</span>
+                    </button>
+                    <button onclick="goToStep(3)" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm flex items-center space-x-1 shadow">
+                        <span>Lanjut Pengerjaan LKPD-2</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- STEP 3: PENGERJAAN LKPD-2 -->
+        <!-- ======================================================== -->
+        <section id="view-step-3" class="hidden">
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden mb-6">
+                <div class="gradient-bg p-6 text-white flex justify-between items-center">
+                    <div>
+                        <span class="bg-blue-400/30 text-white text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wide">LKPD-2 Pemrograman</span>
+                        <h2 class="text-2xl font-bold mt-1">Lembar Kerja Peserta Didik</h2>
+                        <p class="text-xs text-blue-100 mt-0.5">Topik: Membandingkan Algoritma Dasar (Kode TP-7)</p>
+                    </div>
+                    <div class="text-right hidden sm:block">
+                        <div class="text-xs text-blue-200">Identitas Siswa:</div>
+                        <div id="lkpd-student-display" class="font-bold text-sm text-yellow-300">-</div>
+                    </div>
+                </div>
+
+                <!-- Case Study Briefing Box -->
+                <div class="p-6 bg-slate-50 border-b border-slate-200">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-2 text-indigo-900 font-bold">
+                            <i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i>
+                            <span>Kasus Utama LKPD-2</span>
+                        </div>
+                        <p class="text-sm text-slate-700">Diberikan sekumpulan data angka sebagai berikut:</p>
+                        <div class="flex items-center justify-center space-x-3 py-2">
+                            <span class="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-base shadow-sm">14</span>
+                            <span class="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-base shadow-sm">7</span>
+                            <span class="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-base shadow-sm">21</span>
+                            <span class="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-base shadow-sm">9</span>
+                            <span class="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-base shadow-sm">16</span>
+                        </div>
+                        <p class="text-xs text-slate-600">
+                            <strong>Tujuan:</strong> Tentukan nilai terbesar dari data di atas dengan membandingkan <strong>Cara A (Pencarian Langsung)</strong> dan <strong>Cara B (Bubble Sort / Pengurutan)</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Questions Form -->
+                <form id="form-lkpd" onsubmit="saveLKPD(event)" class="p-6 md:p-8 space-y-6">
+                    <!-- Question 1 -->
+                    <div class="space-y-2">
+                        <label class="block font-semibold text-slate-800 text-sm">
+                            1. Apa hasil akhir nilai terbesar yang diperoleh dari kedua algoritma? <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="lkpd-q1" required placeholder="Tuliskan nilai terbesar yang dihasilkan kedua algoritma..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="space-y-2">
+                        <label class="block font-semibold text-slate-800 text-sm">
+                            2. Berapa jumlah perbandingan yang dilakukan oleh masing-masing algoritma untuk 5 data tersebut? <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-600 block mb-1">Cara A (Pencarian Langsung):</span>
+                                <input type="number" id="lkpd-q2a" required placeholder="Jumlah perbandingan..." class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm">
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-600 block mb-1">Cara B (Bubble Sort standar):</span>
+                                <input type="number" id="lkpd-q2b" required placeholder="Jumlah perbandingan..." class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="space-y-2">
+                        <label class="block font-semibold text-slate-800 text-sm">
+                            3. Algoritma mana yang lebih efisien untuk kasus di atas? Berikan alasannya berdasarkan jumlah langkah! <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="lkpd-q3" rows="3" required placeholder="Jelaskan algoritma mana yang lebih efisien dan alasan logisnya..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="space-y-2">
+                        <label class="block font-semibold text-slate-800 text-sm">
+                            4. Apakah pilihan algoritma akan berubah jika semua angka tersebut harus diurutkan? Mengapa? <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="lkpd-q4" rows="3" required placeholder="Tuliskan pendapat dan kesimpulan kelompok..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
+                    </div>
+
+                    <!-- Question Refleksi -->
+                    <div class="space-y-2 pt-2 border-t border-slate-200">
+                        <label class="block font-semibold text-indigo-900 text-sm">
+                            5. Refleksi: Hal baru atau kriteria paling penting apa yang kamu pelajari hari ini?
+                        </label>
+                        <textarea id="lkpd-q5" rows="2" placeholder="Tuliskan refleksi singkat kamu..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
+                    </div>
+
+                    <div class="pt-4 flex justify-between items-center">
+                        <button type="button" onclick="goToStep(2)" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 text-sm font-medium">
+                            Kembali ke Materi
+                        </button>
+                        <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm shadow-md flex items-center space-x-2">
+                            <span>Simpan LKPD & Lanjut Kuis</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- STEP 4: KUIS EVALUASI MANDIRI -->
+        <!-- ======================================================== -->
+        <section id="view-step-4" class="hidden">
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden mb-6">
+                <div class="bg-indigo-900 p-6 text-white flex justify-between items-center">
+                    <div>
+                        <span class="bg-indigo-700 text-indigo-100 text-xs px-2.5 py-1 rounded-full font-bold uppercase">Evaluasi Pemahaman</span>
+                        <h2 class="text-xl font-bold mt-1">Kuis Singkat Pilihan Ganda</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-indigo-200">3 Soal Pemahaman</span>
+                    </div>
+                </div>
+
+                <form id="form-quiz" onsubmit="submitQuiz(event)" class="p-6 md:p-8 space-y-6">
+                    <!-- Quiz Item 1 -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <p class="font-semibold text-slate-800 text-sm">
+                            1. Hal utama yang perlu diperhatikan ketika membandingkan algoritma adalah ...
+                        </p>
+                        <div class="space-y-2 text-sm text-slate-700">
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q1" value="A" required class="text-blue-600">
+                                <span>A. Warna tampilan program</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q1" value="B" class="text-blue-600">
+                                <span>B. Kesederhanaan, jumlah langkah, dan efisiensi</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q1" value="C" class="text-blue-600">
+                                <span>C. Nama pembuat algoritma</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q1" value="D" class="text-blue-600">
+                                <span>D. Panjang nama variabel saja</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Item 2 -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <p class="font-semibold text-slate-800 text-sm">
+                            2. Untuk mencari nilai terbesar dari 20 angka secara langsung (tanpa mengurutkan), berapa jumlah perbandingan yang diperlukan?
+                        </p>
+                        <div class="space-y-2 text-sm text-slate-700">
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q2" value="A" required class="text-blue-600">
+                                <span>A. 10 perbandingan</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q2" value="B" class="text-blue-600">
+                                <span>B. 19 perbandingan</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q2" value="C" class="text-blue-600">
+                                <span>C. 20 perbandingan</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q2" value="D" class="text-blue-600">
+                                <span>D. 40 perbandingan</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Item 3 -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <p class="font-semibold text-slate-800 text-sm">
+                            3. Mengapa algoritma yang efisien sangat penting ketika jumlah data bertambah banyak?
+                        </p>
+                        <div class="space-y-2 text-sm text-slate-700">
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q3" value="A" required class="text-blue-600">
+                                <span>A. Agar program selalu memiliki baris kode lebih banyak</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q3" value="B" class="text-blue-600">
+                                <span>B. Agar program tidak perlu menghasilkan jawaban</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q3" value="C" class="text-blue-600">
+                                <span>C. Agar kebutuhan operasi dan sumber daya komputasi dapat ditekan</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-2 rounded bg-white border border-slate-200 hover:bg-blue-50 cursor-pointer">
+                                <input type="radio" name="q3" value="D" class="text-blue-600">
+                                <span>D. Agar semua algoritma menjadi identik</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-between items-center">
+                        <button type="button" onclick="goToStep(3)" class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-100 text-sm font-medium">
+                            Kembali ke LKPD-2
+                        </button>
+                        <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold text-sm shadow-md flex items-center space-x-2">
+                            <span>Selesaikan Kuis & Cek Hasil</span>
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- STEP 5: LAPORAN & GOOGLE SHEETS / EXCEL GURU -->
+        <!-- ======================================================== -->
+        <section id="view-step-5" class="hidden">
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-6">
+                <div class="gradient-bg p-6 text-white text-center">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i data-lucide="award" class="w-6 h-6 text-yellow-300"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold">Laporan Ringkasan Hasil Pembelajaran</h2>
+                    <p class="text-xs text-blue-100 mt-1">Data LKPD & Kuis Anda tersinkronisasi otomatis ke Google Sheets & Cloud</p>
+                </div>
+
+                <div class="p-6 md:p-8 space-y-6">
+                    <!-- Summary Score Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                            <span class="text-xs text-slate-500 uppercase font-semibold">Siswa & Kelas</span>
+                            <div id="summary-student-name" class="text-base font-bold text-slate-800 mt-1">-</div>
+                            <div id="summary-student-class" class="text-xs text-slate-600">-</div>
+                        </div>
+
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-center">
+                            <span class="text-xs text-blue-600 uppercase font-semibold">Skor Kuis Evaluasi</span>
+                            <div id="summary-quiz-score" class="text-2xl font-black text-blue-700 mt-1">0 / 100</div>
+                            <div id="summary-quiz-detail" class="text-xs text-blue-600">0 dari 3 Benar</div>
+                        </div>
+
+                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-center">
+                            <span class="text-xs text-emerald-600 uppercase font-semibold">Status Sinkronisasi</span>
+                            <div id="summary-sync-status" class="text-base font-bold text-emerald-700 mt-1 flex items-center justify-center space-x-1">
+                                <i data-lucide="cloud-check" class="w-5 h-5 text-emerald-600"></i>
+                                <span>Tersimpan</span>
+                            </div>
+                            <div class="text-xs text-emerald-600 mt-0.5" id="summary-sync-subtext">Tercatat di Server Guru</div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================================== -->
+                    <!-- GOOGLE SHEETS AUTO-SYNC CONFIG FOR TEACHER -->
+                    <!-- ======================================================== -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-blue-900 text-sm flex items-center space-x-2">
+                                <i data-lucide="file-spreadsheet" class="w-5 h-5 text-blue-600"></i>
+                                <span>Hubungkan Langsung ke Google Sheets / Excel Anda</span>
+                            </h3>
+                            <span id="gsheets-status-badge" class="text-[11px] bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded font-bold">Belum Terhubung ke Google Sheet</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Tempel URL Web App Google Apps Script Anda di bawah ini agar data dari HP siswa otomatis tersimpan di Google Sheets Anda:
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="url" id="input-gsheets-url" placeholder="https://script.google.com/macros/s/.../exec" class="flex-grow px-3 py-2 rounded-lg border border-blue-300 text-xs bg-white outline-none focus:ring-2 focus:ring-blue-500">
+                            <button onclick="saveGoogleSheetConfig()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1 flex-shrink-0">
+                                <i data-lucide="save" class="w-4 h-4"></i>
+                                <span>Simpan URL</span>
+                            </button>
+                            <button onclick="testGoogleSheetConnection()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1 flex-shrink-0">
+                                <i data-lucide="zap" class="w-4 h-4"></i>
+                                <span>Test Koneksi</span>
+                            </button>
+                        </div>
+
+                        <!-- Tutorial Toggle -->
+                        <div class="pt-2 border-t border-blue-200">
+                            <details class="text-xs text-blue-800">
+                                <summary class="cursor-pointer font-semibold hover:text-blue-900">📖 Panduan 1 Menit Menyiapkan Google Sheet Otomatis untuk Guru</summary>
+                                <ol class="list-decimal pl-4 space-y-1 mt-2 text-slate-700">
+                                    <li>Buat file baru di <a href="https://sheets.new" target="_blank" class="text-blue-600 underline font-semibold">Google Sheets</a>.</li>
+                                    <li>Buka menu <strong>Extensions (Ekstensi)</strong> > <strong>Apps Script</strong>.</li>
+                                    <li>Hapus semua kode di sana, lalu salin dan tempel kode lengkap di bawah ini:</li>
+                                </ol>
+                                <div class="bg-slate-900 text-emerald-400 p-3 rounded-lg font-mono text-[10px] mt-2 overflow-x-auto select-all">
+function doGet(e) {
+  return ContentService.createTextOutput("Google Sheet Webhook Aktif!").setMimeType(ContentService.MimeType.TEXT);
+}
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["Waktu", "Nama Siswa", "Kelas", "Kelompok", "Anggota", "Jawaban Q1", "Langkah A", "Langkah B", "Analisis Q3", "Analisis Q4", "Refleksi", "Skor Kuis"]);
+    }
+    sheet.appendRow([data.timestamp, data.nama, data.kelas, data.kelompok, data.anggota, data.lkpdQ1, data.lkpdQ2a, data.lkpdQ2b, data.lkpdQ3, data.lkpdQ4, data.lkpdQ5, data.quizScore]);
+    return ContentService.createTextOutput(JSON.stringify({"result":"success"})).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({"result":"error", "message": err.toString()})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+                                </div>
+                                <p class="mt-2 text-slate-700">4. Klik tombol <strong>Deploy</strong> (Terapkan) > <strong>New deployment (Deployment baru)</strong> > Pilih tipe <strong>Web app</strong>.</p>
+                                <p class="text-slate-700">5. Atur <em>Execute as: Me (Saya)</em> dan <em>Who has access: Anyone (Siapa saja)</em>. <strong>Penting:</strong> Jika Anda memperbarui kode, pastikan memilih versi baru (New version) saat deploy.</p>
+                                <p class="text-slate-700 font-semibold mt-1">6. Salin URL Web App berakhiran <code>/exec</code>, tempel di kotak di atas, lalu klik tombol <strong>Test Koneksi</strong>!</p>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Action Box for Export to Excel & Config -->
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold flex items-center space-x-2 text-emerald-400">
+                                <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                                <span>Unduh Laporan Excel (File .xlsx)</span>
+                            </h3>
+                            <p class="text-xs text-slate-300 mt-1">
+                                Unduh rekapitulasi data seluruh siswa dari berbagai perangkat ke format spreadsheet Excel (.xlsx) kapan saja.
+                            </p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="exportToExcel()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition flex items-center space-x-2 flex-shrink-0 text-sm">
+                                <i data-lucide="download" class="w-5 h-5"></i>
+                                <span>Unduh Excel (.xlsx)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Records Table & Cloud Status -->
+                    <div class="space-y-4 pt-4 border-t border-slate-200">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                            <h4 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
+                                <i data-lucide="database" class="w-4 h-4 text-blue-600"></i>
+                                <span>Panel Rekapitulasi Real-Time Siswa</span>
+                            </h4>
+                            <span id="cloud-status-badge" class="text-xs px-2.5 py-1 rounded bg-blue-100 text-blue-800 font-medium">Menghubungkan Cloud...</span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-xl border border-slate-200">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-slate-100 text-slate-600 border-b">
+                                    <tr>
+                                        <th class="p-3">Waktu</th>
+                                        <th class="p-3">Nama Siswa</th>
+                                        <th class="p-3">Kelas</th>
+                                        <th class="p-3">Kelompok</th>
+                                        <th class="p-3 text-center">Hasil LKPD Q1</th>
+                                        <th class="p-3 text-center">Skor Kuis</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-teacher-records" class="divide-y divide-slate-100 font-medium">
+                                    <tr><td colspan="6" class="p-4 text-center text-slate-400">Memuat data dari cloud...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Firebase SDK Imports & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Application State
+        window.currentStep = 1;
+        window.studentData = { nama: '', kelas: '', kelompok: '', anggota: '' };
+        window.lkpdAnswers = { q1: '', q2a: '', q2b: '', q3: '', q4: '', q5: '' };
+        window.quizScore = 0;
+        window.quizResults = { q1: '', q2: '', q3: '' };
+        window.allSubmissions = [];
+        
+        // PASTE CANONICAL GOOGLE APPS SCRIPT WEBHOOK URL HERE IF AVAILABLE
+        // DENGAN MENEMPELKAN URL GOOGLE SHEET ANDA DI SINI, SELURUH HP SISWA OTOMATIS BISA KIRIM DATA
+        const DEFAULT_GSHEETS_URL = ""; 
+        window.googleSheetWebhookUrl = localStorage.getItem('tp7_gsheets_webhook') || DEFAULT_GSHEETS_URL;
+
+        // Firebase Configuration & Initialization
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'tp7-algoritma-default';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyDummyKeyForPreview",
+            authDomain: "default.firebaseapp.com",
+            projectId: "default-project"
+        };
+
+        let app, db, auth;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch(e) {
+            console.warn("Firebase initialization warning:", e);
+        }
+
+        // Initialize Lucide Icons & Chart on Load
+        window.onload = function() {
+            lucide.createIcons();
+            initComparisonChart();
+            initCloudSync();
+            
+            if (window.googleSheetWebhookUrl) {
+                const urlInput = document.getElementById('input-gsheets-url');
+                if (urlInput) urlInput.value = window.googleSheetWebhookUrl;
+                setGoogleSheetStatus("Google Sheet Terhubung Otomatis", "bg-emerald-100 text-emerald-800");
+            }
+        };
+
+        // Cloud Firestore Real-time Sync (Rule 1, Rule 2, Rule 3 followed)
+        async function initCloudSync() {
+            if (!auth || !db) {
+                setCloudStatus("Mode Lokal (Cloud Nonaktif)", "bg-amber-100 text-amber-800");
+                loadFromLocalStorage();
+                return;
+            }
+
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                // RULE 1: Strict path for public shared data
+                const submissionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+                
+                // RULE 2: Simple query without orderBy/where to prevent index errors
+                onSnapshot(query(submissionsRef), (snapshot) => {
+                    const cloudData = [];
+                    snapshot.forEach((doc) => {
+                        cloudData.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    // Sort descending by timestamp in memory
+                    cloudData.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+                    window.allSubmissions = cloudData;
+                    
+                    // Cache to local storage as backup
+                    try {
+                        localStorage.setItem('tp7_submissions_cache', JSON.stringify(window.allSubmissions));
+                    } catch(e) {}
+
+                    updateTeacherTable();
+                    setCloudStatus("Tersambung ke Cloud (Live Auto-Sync)", "bg-emerald-100 text-emerald-800");
+                }, (error) => {
+                    console.error("Cloud sync error:", error);
+                    setCloudStatus("Koneksi Cloud Terbatas (Menggunakan Cache)", "bg-amber-100 text-amber-800");
+                    loadFromLocalStorage();
+                });
+
+            } catch(err) {
+                console.error("Auth error:", err);
+                setCloudStatus("Mode Offline", "bg-red-100 text-red-800");
+                loadFromLocalStorage();
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const localSaved = localStorage.getItem('tp7_submissions_cache');
+                if (localSaved) {
+                    window.allSubmissions = JSON.parse(localSaved);
+                    updateTeacherTable();
+                }
+            } catch(e) {}
+        }
+
+        function setCloudStatus(text, className) {
+            const badge = document.getElementById('cloud-status-badge');
+            if (badge) {
+                badge.innerText = text;
+                badge.className = `text-xs px-2.5 py-1 rounded font-medium ${className}`;
+            }
+        }
+
+        function setGoogleSheetStatus(text, className) {
+            const badge = document.getElementById('gsheets-status-badge');
+            if (badge) {
+                badge.innerText = text;
+                badge.className = `text-[11px] px-2.5 py-0.5 rounded font-bold ${className}`;
+            }
+        }
+
+        window.saveGoogleSheetConfig = function() {
+            const url = document.getElementById('input-gsheets-url').value.trim();
+            if (!url.startsWith('https://script.google.com')) {
+                showModal('Format URL Salah', 'Pastikan Anda memasukkan URL Web App Google Apps Script yang sah (diawali https://script.google.com dan berakhiran /exec).');
+                return;
+            }
+            window.googleSheetWebhookUrl = url;
+            localStorage.setItem('tp7_gsheets_webhook', url);
+            setGoogleSheetStatus("Google Sheet Terhubung", "bg-emerald-100 text-emerald-800");
+            showModal('Berhasil!', 'Koneksi ke Google Sheets guru berhasil disimpan. Silakan klik tombol "Test Koneksi" untuk memastikan data masuk.');
+        }
+
+        window.testGoogleSheetConnection = async function() {
+            const url = document.getElementById('input-gsheets-url').value.trim() || window.googleSheetWebhookUrl;
+            if (!url.startsWith('https://script.google.com')) {
+                showModal('Belum Ada URL', 'Silakan masukkan dan simpan URL Web App Google Sheets Anda terlebih dahulu.');
+                return;
+            }
+            showModal('Menguji Koneksi...', 'Mengirim data uji coba (Test Siswa) ke Google Sheet Anda...');
+            try {
+                const testEntry = {
+                    timestamp: new Date().toLocaleString('id-ID'),
+                    nama: "TEST KONEKSI GURU",
+                    kelas: "Admin-X",
+                    kelompok: "Kelompok Uji",
+                    anggota: "Guru Informatika",
+                    lkpdQ1: "Berhasil Terhubung",
+                    lkpdQ2a: "4",
+                    lkpdQ2b: "10",
+                    lkpdQ3: "Uji coba webhook sukses",
+                    lkpdQ4: "Uji coba sukses",
+                    lkpdQ5: "Sistem siap digunakan siswa",
+                    quizScore: 100
+                };
+
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testEntry)
+                });
+
+                showModal('Uji Kirim Berhasil!', 'Data tes telah dikirim ke Google Sheet Anda. Silakan cek file Google Sheets Anda apakah baris baru bertuliskan "TEST KONEKSI GURU" sudah muncul.');
+            } catch(err) {
+                showModal('Gagal Mengirim', 'Terjadi kesalahan jaringan: ' + err.message);
+            }
+        }
+
+        // Navigation Controller
+        window.goToStep = function(step) {
+            if (step > 1 && !window.studentData.nama) {
+                showModal('Peringatan', 'Silakan isi dan simpan Nama serta Kelas terlebih dahulu!');
+                return;
+            }
+
+            window.currentStep = step;
+
+            for (let i = 1; i <= 5; i++) {
+                const view = document.getElementById(`view-step-${i}`);
+                const btn = document.getElementById(`step-btn-${i}`);
+                if (view) view.classList.add('hidden');
+                
+                if (btn) {
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-indigo-800', 'text-indigo-300');
+                }
+            }
+
+            const activeView = document.getElementById(`view-step-${step}`);
+            const activeBtn = document.getElementById(`step-btn-${step}`);
+            if (activeView) activeView.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-indigo-800', 'text-indigo-300');
+                activeBtn.classList.add('bg-blue-600', 'text-white');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.saveIdentity = function(e) {
+            e.preventDefault();
+            window.studentData.nama = document.getElementById('input-nama').value.trim();
+            window.studentData.kelas = document.getElementById('input-kelas').value.trim();
+            window.studentData.kelompok = document.getElementById('input-kelompok').value.trim() || '-';
+            window.studentData.anggota = document.getElementById('input-anggota').value.trim() || '-';
+
+            document.getElementById('lkpd-student-display').innerText = `${window.studentData.nama} (${window.studentData.kelas})`;
+            window.goToStep(2);
+        }
+
+        window.saveLKPD = function(e) {
+            e.preventDefault();
+            window.lkpdAnswers.q1 = document.getElementById('lkpd-q1').value.trim();
+            window.lkpdAnswers.q2a = document.getElementById('lkpd-q2a').value;
+            window.lkpdAnswers.q2b = document.getElementById('lkpd-q2b').value;
+            window.lkpdAnswers.q3 = document.getElementById('lkpd-q3').value.trim();
+            window.lkpdAnswers.q4 = document.getElementById('lkpd-q4').value.trim();
+            window.lkpdAnswers.q5 = document.getElementById('lkpd-q5').value.trim() || '-';
+
+            window.goToStep(4);
+        }
+
+        window.submitQuiz = async function(e) {
+            e.preventDefault();
+            const form = document.getElementById('form-quiz');
+            const q1Val = form.q1.value;
+            const q2Val = form.q2.value;
+            const q3Val = form.q3.value;
+
+            window.quizResults = { q1: q1Val, q2: q2Val, q3: q3Val };
+
+            let correctCount = 0;
+            if (q1Val === 'B') correctCount++;
+            if (q2Val === 'B') correctCount++;
+            if (q3Val === 'C') correctCount++;
+
+            window.quizScore = Math.round((correctCount / 3) * 100);
+
+            document.getElementById('summary-student-name').innerText = window.studentData.nama;
+            document.getElementById('summary-student-class').innerText = `Kelas: ${window.studentData.kelas} | Kelompok: ${window.studentData.kelompok}`;
+            document.getElementById('summary-quiz-score').innerText = `${window.quizScore} / 100`;
+            document.getElementById('summary-quiz-detail').innerText = `${correctCount} dari 3 Soal Benar`;
+
+            const entry = {
+                timestamp: new Date().toLocaleString('id-ID'),
+                nama: window.studentData.nama,
+                kelas: window.studentData.kelas,
+                kelompok: window.studentData.kelompok,
+                anggota: window.studentData.anggota,
+                lkpdQ1: window.lkpdAnswers.q1,
+                lkpdQ2a: window.lkpdAnswers.q2a,
+                lkpdQ2b: window.lkpdAnswers.q2b,
+                lkpdQ3: window.lkpdAnswers.q3,
+                lkpdQ4: window.lkpdAnswers.q4,
+                lkpdQ5: window.lkpdAnswers.q5,
+                quizScore: window.quizScore
+            };
+
+            // Save to Cloud Firestore & Google Sheets Webhook
+            await saveSubmissionToCloud(entry);
+
+            window.goToStep(5);
+        }
+
+        async function saveSubmissionToCloud(entry) {
+            // 1. Save to Firebase Firestore
+            if (db && auth) {
+                try {
+                    const submissionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+                    await addDoc(submissionsRef, entry);
+                } catch(err) {
+                    console.error("Cloud push failed:", err);
+                }
+            }
+
+            // 2. Send to Teacher's Google Sheet Webhook if configured
+            const activeWebhookUrl = window.googleSheetWebhookUrl || localStorage.getItem('tp7_gsheets_webhook');
+            if (activeWebhookUrl) {
+                try {
+                    await fetch(activeWebhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(entry)
+                    });
+                    document.getElementById('summary-sync-status').innerHTML = `<i data-lucide="cloud-check" class="w-5 h-5 text-emerald-600"></i><span>Terkirim ke Google Sheet & Cloud</span>`;
+                    document.getElementById('summary-sync-subtext').innerText = "Otomatis masuk ke Google Sheet Anda";
+                } catch(e) {
+                    console.error("Google Sheet webhook error:", e);
+                }
+            } else {
+                document.getElementById('summary-sync-status').innerHTML = `<i data-lucide="cloud-check" class="w-5 h-5 text-emerald-600"></i><span>Tersimpan di Cloud</span>`;
+                document.getElementById('summary-sync-subtext').innerText = "Tercatat di server guru";
+            }
+            lucide.createIcons();
+        }
+
+        window.updateTeacherTable = function() {
+            const tbody = document.getElementById('table-teacher-records');
+            if (!tbody) return;
+
+            if (window.allSubmissions.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Belum ada pengumpulan data siswa.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = window.allSubmissions.map(item => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 text-slate-500">${item.timestamp || '-'}</td>
+                    <td class="p-3 font-semibold text-slate-800">${item.nama}</td>
+                    <td class="p-3">${item.kelas}</td>
+                    <td class="p-3 text-slate-600">${item.kelompok}</td>
+                    <td class="p-3 text-center font-mono text-blue-600">${item.lkpdQ1}</td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-1 rounded text-xs font-bold ${(item.quizScore || 0) >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                            ${item.quizScore}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function initComparisonChart() {
+            const ctx = document.getElementById('chartComparison');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['5 Angka', '10 Angka', '20 Angka', '100 Angka'],
+                    datasets: [
+                        {
+                            label: 'Pencarian Langsung O(n)',
+                            data: [4, 9, 19, 99],
+                            backgroundColor: 'rgba(59, 130, 246, 0.85)',
+                            borderColor: 'rgb(37, 99, 235)',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Bubble Sort Standar O(n²)',
+                            data: [10, 45, 190, 4950],
+                            backgroundColor: 'rgba(245, 158, 11, 0.85)',
+                            borderColor: 'rgb(217, 119, 6)',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Perbandingan Jumlah Perbandingan Saat Ukuran Data Bertambah',
+                            font: { family: 'Inter', size: 12, weight: 'bold' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw.toLocaleString()} perbandingan`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Jumlah Perbandingan (Skala Logaritma)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Export All Teacher Records to XLSX File
+        window.exportToExcel = function() {
+            if (window.allSubmissions.length === 0) {
+                showModal('Perhatian', 'Belum ada data siswa yang terkumpul di sistem!');
+                return;
+            }
+
+            const excelRows = window.allSubmissions.map((sub, index) => ({
+                "No": index + 1,
+                "Waktu Pengumpulan": sub.timestamp,
+                "Nama Siswa": sub.nama,
+                "Kelas": sub.kelas,
+                "Nama Kelompok": sub.kelompok,
+                "Anggota Kelompok": sub.anggota,
+                "Hasil Nilai Terbesar (Q1)": sub.lkpdQ1,
+                "Langkah Cara A (Q2a)": sub.lkpdQ2a,
+                "Langkah Cara B (Q2b)": sub.lkpdQ2b,
+                "Analisis Efisiensi (Q3)": sub.lkpdQ3,
+                "Analisis Jika Diurutkan (Q4)": sub.lkpdQ4,
+                "Refleksi Siswa (Q5)": sub.lkpdQ5,
+                "Skor Kuis Evaluasi": sub.quizScore
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Laporan Hasil LKPD-2 Cloud");
+
+            worksheet["!cols"] = [
+                { wch: 5 }, { wch: 20 }, { wch: 20 }, { wch: 10 }, { wch: 18 },
+                { wch: 25 }, { wch: 22 }, { wch: 18 }, { wch: 18 }, { wch: 35 },
+                { wch: 35 }, { wch: 25 }, { wch: 15 }
+            ];
+
+            const fileName = `Laporan_LKPD2_Informatika_TP7_${new Date().toISOString().slice(0, 10)}.xlsx`;
+            XLSX.writeFile(workbook, fileName);
+        }
+
+        // Custom Modal UI functions (Replacing alert())
+        window.showModal = function(title, message) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('modal-notification').classList.remove('hidden');
+        }
+
+        window.closeNotificationModal = function() {
+            document.getElementById('modal-notification').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
